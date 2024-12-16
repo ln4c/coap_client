@@ -1,0 +1,8 @@
+[package]
+name = "coap_client"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+libcoap-rs = "0.2.2"
+url = "2.5.4"
