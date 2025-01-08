@@ -13,9 +13,6 @@ use libcoap_rs::{
     CoapContext, CoapRequestHandler, CoapResource,
 };
 
-use libcoap_sys::coap_oscore_conf_t;
-use url::Url;
-
 fn main() {
     let server_address: SocketAddr = "[::1]:5683".parse().unwrap();
 
@@ -23,7 +20,10 @@ fn main() {
     let mut context = CoapContext::new().expect("Failed to create CoAP context");
 
     // TODO oscore conf obj
-    let conf: OscoreConf = OscoreConf::new();
+    let conf: OscoreConf = OscoreConf::new(1, "oscore_conf");
+
+    // TODO: wip
+    context.add_new_oscore_recipient("server");
 
     // Connect to the server at the specified address over UDP (plaintext CoAP)//!
     let session = CoapClientSession::connect_oscore(&mut context, server_address, conf)
