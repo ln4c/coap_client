@@ -40,6 +40,9 @@ fn main() {
     let req_handle = session
         .send_request(request)
         .expect("Unable to send request");
+
+    println!("DEBUG: Send hello_world request");
+
     loop {
         context
             .do_io(Some(Duration::from_secs(10)))
@@ -51,6 +54,7 @@ fn main() {
                 CoapMessageCode::Response(CoapResponseCode::Content)
             );
             assert_eq!(response.data().unwrap().as_ref(), "Hello World!".as_bytes());
+            println!("DEBUG: Received valid response");
             return;
         }
     }
