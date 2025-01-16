@@ -22,9 +22,6 @@ fn main() {
     // TODO oscore conf obj
     let conf: OscoreConf = OscoreConf::new(1, "oscore_conf");
 
-    // TODO: wip
-    context.add_new_oscore_recipient("server");
-
     // Connect to the server at the specified address over UDP (plaintext CoAP)//!
     let session = CoapClientSession::connect_oscore(&mut context, server_address, conf)
         .expect("Failed to create client-side session");
