@@ -1,4 +1,5 @@
 use std::{
+    fs,
     net::{SocketAddr, UdpSocket},
     time::Duration,
 };
@@ -6,7 +7,6 @@ use std::{
 use libcoap_rs::{
     error::UriParsingError,
     message::{CoapMessageCommon, CoapRequest, CoapResponse},
-    oscore::OscoreConf,
     protocol::{CoapMessageCode, CoapMessageType, CoapRequestCode, CoapResponseCode},
     session::{CoapClientSession, CoapSessionCommon},
     types::{CoapUri, CoapUriScheme},
@@ -19,11 +19,11 @@ fn main() {
     // Create a new context.
     let mut context = CoapContext::new().expect("Failed to create CoAP context");
 
-    // TODO oscore conf obj
-    let conf: OscoreConf = OscoreConf::new(1, "oscore_conf");
+    // read bytes from oscore_conf
+    let bytes = fs::read("oscore_conf").expect("ERROR: Could not read oscore_conf");
 
-    // Connect to the server at the specified address over UDP (plaintext CoAP)//!
-    let session = CoapClientSession::connect_oscore(&mut context, server_address, conf)
+    // Connect to the server at the specified address over UDP+OSCORE!
+    let session = CoapClientSession::connect_oscore(&mut context, server_address, 1, &bytes)
         .expect("Failed to create client-side session");
 
     // Create a new CoAP URI to request from.
