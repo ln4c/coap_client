@@ -20,7 +20,7 @@ fn main() {
     let mut context = CoapContext::new().expect("Failed to create CoAP context");
 
     // read bytes from oscore_conf
-    let bytes = fs::read("oscore_conf").expect("ERROR: Could not read oscore_conf");
+    let bytes = fs::read("oscore_conf").expect("Could not read oscore_conf file");
 
     // Connect to the server at the specified address over UDP+OSCORE!
     let session = CoapClientSession::connect_oscore(&mut context, server_address, 1, &bytes)
@@ -38,6 +38,7 @@ fn main() {
         .send_request(request)
         .expect("Unable to send request");
 
+    #[cfg(debug_assertions)]
     println!("DEBUG: Send hello_world request");
 
     loop {
@@ -51,6 +52,7 @@ fn main() {
                 CoapMessageCode::Response(CoapResponseCode::Content)
             );
             assert_eq!(response.data().unwrap().as_ref(), "Hello World!".as_bytes());
+            #[cfg(debug_assertions)]
             println!("DEBUG: Received valid response");
             return;
         }
