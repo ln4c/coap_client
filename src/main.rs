@@ -1,16 +1,11 @@
-use std::{
-    fs,
-    net::{SocketAddr, UdpSocket},
-    time::Duration,
-};
+use std::{fs, net::SocketAddr, time::Duration};
 
 use libcoap_rs::{
-    error::UriParsingError,
-    message::{CoapMessageCommon, CoapRequest, CoapResponse},
+    message::{CoapMessageCommon, CoapRequest},
     protocol::{CoapMessageCode, CoapMessageType, CoapRequestCode, CoapResponseCode},
     session::{CoapClientSession, CoapSessionCommon},
-    types::{CoapUri, CoapUriScheme},
-    CoapContext, CoapRequestHandler, CoapResource,
+    types::CoapUri,
+    CoapContext, OscoreConf,
 };
 
 fn main() {
@@ -22,8 +17,11 @@ fn main() {
     // read bytes from oscore_conf
     let bytes = fs::read("oscore_conf").expect("Could not read oscore_conf file");
 
+    // create the oscore_conf
+    let oscore_conf = OscoreConf::new_std(1, &bytes).expect("Could not create oscore_conf");
+
     // Connect to the server at the specified address over UDP+OSCORE!
-    let session = CoapClientSession::connect_oscore(&mut context, server_address, 1, &bytes)
+    let session = CoapClientSession::connect_oscore(&mut context, server_address, oscore_conf)
         .expect("Failed to create client-side session");
 
     // Create a new CoAP URI to request from.

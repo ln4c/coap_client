@@ -1,6 +1,6 @@
-master_secret,hex,"0102030405060708090a0b0c0d0e0f10"
-master_salt,hex,"9e7ca92223786340"
-sender_id,ascii,"client"
+master_secret,hex,"1234"
+master_salt,hex,"4321"
+sender_id,ascii,"edhoc"
 recipient_id,ascii,"server"
 replay_window,integer,30
 aead_alg,integer,10
