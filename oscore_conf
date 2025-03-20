@@ -1,6 +1,6 @@
 master_secret,hex,"1234"
 master_salt,hex,"4321"
-sender_id,ascii,"server"
+sender_id,ascii,"backend"
 recipient_id,ascii,"unknown"
 replay_window,integer,30
 aead_alg,integer,10
